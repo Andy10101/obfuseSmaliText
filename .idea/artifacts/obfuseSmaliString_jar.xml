@@ -3,10 +3,9 @@
     <output-path>$PROJECT_DIR$/out/artifacts/obfuseSmaliString_jar</output-path>
     <root id="archive" name="obfuseSmaliString.jar">
       <element id="module-output" name="obfuseSmaliString" />
-      <element id="extracted-dir" path="$PROJECT_DIR$/commons-lang3-3.5.jar" path-in-jar="/" />
       <element id="library" level="project" name="commons-lang3-3.5-sources" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/commons-lang3-3.5.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$PROJECT_DIR$/asm-all-5.2.jar" path-in-jar="/" />
-      <element id="library" level="project" name="12306obfused" />
     </root>
   </artifact>
 </component>
