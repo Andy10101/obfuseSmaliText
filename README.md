@@ -17,9 +17,12 @@ smali字符串混淆
 ##### 2017-5-5
 更新ObfuseJarString方法，替换其中class字节码为java7，防止dx无法正确编译dex
 
+##### 2017-5-10
+更新jar包混淆string方式，改为每个字符串解密对应一个解密key，字符串以byte数组呈现（未更新jar包，需自行编译），一定要注意编码问题，不然会导致乱码
+
 ##### 使用方法
 * 先使用apktool.jar将apk进行反编译
-* java -jar 执行jar
+* java -Dfile.encoding=utf-8 -jar 执行jar
 * 输入当前已经反编译apk的路径（复制粘贴即可）
 * 等待任务完成，重新打包回去即可
 
@@ -28,6 +31,8 @@ smali字符串混淆
 ##### 混淆版酷安网
 [下载](https://qtfreet.cn/com.coolapk.market_7_Mod.apk)
 
-#### 效果图
+#### smali混淆效果图
 ![](http://p1.bpimg.com/567571/90927a8fd19786b1.png)
 
+#### jar包混淆效果图
+![](http://i4.buimg.com/588926/d9b230241ef448ea.png)
