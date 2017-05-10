@@ -2,9 +2,13 @@ package visitor;
 
 import com.OooOO0OO;
 import org.objectweb.asm.*;
+import org.objectweb.asm.commons.GeneratorAdapter;
+import org.objectweb.asm.commons.InstructionAdapter;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Visit the class to execute string fog.
@@ -25,14 +29,27 @@ public class StringFieldClassVisitor extends ClassVisitor {
     private List<ClassStringField> mFinalFields = new ArrayList<>();
     private List<ClassStringField> mFields = new ArrayList<>();
 
-    private final String mKey;
     private String mClassName;
 
     private boolean mIgnoreClass;
 
-    public StringFieldClassVisitor(String key, ClassWriter cw) {
+    public StringFieldClassVisitor(ClassWriter cw) {
         super(Opcodes.ASM5, cw);
-        this.mKey = key;
+    }
+
+    public void encode(MethodVisitor mv, String str, String mKey) {
+        byte[] enc = OooOO0OO.encode(str.getBytes(), mKey);
+        int len = enc.length;
+        mv.visitIntInsn(Opcodes.SIPUSH, len);
+        mv.visitIntInsn(Opcodes.NEWARRAY, Opcodes.T_BYTE);
+        for (int i = 0; i < len; i++) {
+            mv.visitInsn(Opcodes.DUP);
+            mv.visitIntInsn(Opcodes.SIPUSH, i);
+            mv.visitIntInsn(Opcodes.BIPUSH, enc[i]);
+            mv.visitInsn(Opcodes.BASTORE);
+        }
+        mv.visitLdcInsn((String) mKey);
+        mv.visitMethodInsn(Opcodes.INVOKESTATIC, Xor_FLAG, "OooOOoo0oo", "([BLjava/lang/String;)Ljava/lang/String;", false);
     }
 
     @Override
@@ -97,9 +114,9 @@ public class StringFieldClassVisitor extends ClassVisitor {
                             if (field.value == null) {
                                 continue;
                             }
-                            super.visitLdcInsn(OooOO0OO.encode(field.value, mKey));
+                            String key = UUID.randomUUID().toString().replace("-", "").trim();
+                            encode(super.mv, field.value, key);
 
-                            super.visitMethodInsn(Opcodes.INVOKESTATIC, Xor_FLAG, "OooOOoo0oo", "(Ljava/lang/String;)Ljava/lang/String;", false);
                             super.visitFieldInsn(Opcodes.PUTSTATIC, mClassName, field.name, ClassStringField.STRING_DESC);
                         }
                     }
@@ -109,8 +126,9 @@ public class StringFieldClassVisitor extends ClassVisitor {
                         // Here init static or static final fields, but we must check field name int 'visitFieldInsn'
                         if (cst != null && cst instanceof String && !TextUtils.isEmptyAfterTrim((String) cst)) {
                             lastStashCst = (String) cst;
-                            super.visitLdcInsn(OooOO0OO.encode(lastStashCst, mKey));
-                            super.visitMethodInsn(Opcodes.INVOKESTATIC, Xor_FLAG, "OooOOoo0oo", "(Ljava/lang/String;)Ljava/lang/String;", false);
+                            String key = UUID.randomUUID().toString().replace("-", "").trim();
+                            encode(super.mv, lastStashCst, key);
+
                         } else {
                             lastStashCst = null;
                             super.visitLdcInsn(cst);
@@ -148,8 +166,8 @@ public class StringFieldClassVisitor extends ClassVisitor {
                     public void visitLdcInsn(Object cst) {
                         // We don't care about whether the field is final or normal
                         if (cst != null && cst instanceof String && !TextUtils.isEmptyAfterTrim((String) cst)) {
-                            super.visitLdcInsn(OooOO0OO.encode((String) cst, mKey));
-                            super.visitMethodInsn(Opcodes.INVOKESTATIC, Xor_FLAG, "OooOOoo0oo", "(Ljava/lang/String;)Ljava/lang/String;", false);
+                            String key = UUID.randomUUID().toString().replace("-", "").trim();
+                            encode(super.mv, (String) cst, key);
                         } else {
                             super.visitLdcInsn(cst);
                         }
@@ -177,9 +195,8 @@ public class StringFieldClassVisitor extends ClassVisitor {
                                     return;
                                 }
                             }
-                            // local variables
-                            super.visitLdcInsn(OooOO0OO.encode((String) cst, mKey));
-                            super.visitMethodInsn(Opcodes.INVOKESTATIC, Xor_FLAG, "OooOOoo0oo", "(Ljava/lang/String;)Ljava/lang/String;", false);
+                            String key = UUID.randomUUID().toString().replace("-", "").trim();
+                            encode(super.mv, (String) cst, key);
                             return;
                         }
                         super.visitLdcInsn(cst);
@@ -201,8 +218,8 @@ public class StringFieldClassVisitor extends ClassVisitor {
                 if (field.value == null) {
                     continue; // It could not be happened
                 }
-                mv.visitLdcInsn(OooOO0OO.encode(field.value, mKey));
-                mv.visitMethodInsn(Opcodes.INVOKESTATIC, Xor_FLAG, "OooOOoo0oo", "(Ljava/lang/String;)Ljava/lang/String;", false);
+                String key = UUID.randomUUID().toString().replace("-", "").trim();
+                encode(mv, field.value, key);
                 mv.visitFieldInsn(Opcodes.PUTSTATIC, mClassName, field.name, ClassStringField.STRING_DESC);
             }
             mv.visitInsn(Opcodes.RETURN);

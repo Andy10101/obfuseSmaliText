@@ -1,3 +1,5 @@
+import com.OooOO0OO;
+
 import java.io.ByteArrayOutputStream;
 import java.io.UnsupportedEncodingException;
 
@@ -11,7 +13,15 @@ public class Test {
 //
 //        System.out.println(OooOOoo0oo("C586AD91D9DDC192CB8AB2B3"));
 
+        String s = OooOO0OO.OooOOoo0oo(new byte[]{-125, -19, -92, -121, -62, -70, -42, -22, -93, 112, 94, 88, 95, 95, 7, -123, -23, -92, -45, -71, -2}, "fe9be13f531746bca463a81316150cd2");
+        System.out.println(s);
+
     }
+
+    public static String OooOOoo0oo(byte[] str, String key) {
+        return "";
+    }
+
     public static final String DEFAULT_KEY = "qtfreet";
     private static final String hexString = "0123456789ABCDEF";
 

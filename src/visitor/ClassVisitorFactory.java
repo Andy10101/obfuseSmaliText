@@ -17,14 +17,14 @@ public final class ClassVisitorFactory {
     private ClassVisitorFactory() {
     }
 
-    public static ClassVisitor create(String className, String key, ClassWriter cw) {
+    public static ClassVisitor create(String className,ClassWriter cw) {
         if (OooOO0OO.class.getName().replace('.', '/').equals(className)) {
-            return new HexClassVisitor(key, cw);
+            return createEmpty(cw);
         }
         if (WhiteLists.inWhiteList(className, WhiteLists.FLAG_PACKAGE) || WhiteLists.inWhiteList(className, WhiteLists.FLAG_CLASS)) {
             return createEmpty(cw);
         }
-        return new StringFieldClassVisitor(key, cw);
+        return new StringFieldClassVisitor(cw);
     }
 
     public static ClassVisitor createEmpty(ClassWriter cw) {

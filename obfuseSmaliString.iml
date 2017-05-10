@@ -10,5 +10,6 @@
     <orderEntry type="library" name="commons-lang3-3.5" level="project" />
     <orderEntry type="library" name="commons-lang3-3.5-sources" level="project" />
     <orderEntry type="library" name="asm-all-5.2" level="project" />
+    <orderEntry type="library" name="allatori" level="project" />
   </component>
 </module>
